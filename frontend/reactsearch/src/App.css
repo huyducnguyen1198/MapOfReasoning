@@ -1,0 +1,113 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.App {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh; /* This makes the container at least as tall as the viewport */
+	text-align: left;
+  }
+  
+  /* Additional styles for SearchBar and SearchResults for a better look */
+  .search-bar, .search-results {
+	width: 80%; /* Adjust based on your preference */
+	max-width: 600px; /* Adjust based on your preference */
+	margin: 20px auto; /* Adds some space around */
+  }
+  
+  .search-bar input, .search-bar button, .search-results {
+	width: 100%; /* Makes input, button, and results take full width of their container */
+	padding: 10px;
+	margin-top: 5px;
+	box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+  }
+  
+  .search-bar input {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+  }
+  
+  .search-bar button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  .search-bar button:hover {
+	background-color: #0056b3;
+  }
+  
+
+  /* for hovering txt box */
+  /* Tooltip container */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	margin: 10px;
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+	visibility: hidden;
+    display: inline-block;
+    margin: 2px;
+    width: 70vw; /* Set width to 120% of viewport width */
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px;
+	position: absolute;
+	z-index: 1;
+	bottom: 30%;
+	left: -30%;
+	right: 10%;
+	opacity: 0;
+	transition: opacity 0.3s;
+  }
+  
+  /* Show the tooltip text when hovering over the tooltip container */
+  .tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
+  }
+  

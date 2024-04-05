@@ -1,7 +1,11 @@
 from flask import Flask, request
+from flask_cors import CORS
+
+
 import searchengine
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 @app.route('/searchBySentence', methods=['GET'])
 def searchBySentence():

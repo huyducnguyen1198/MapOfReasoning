@@ -1,3 +1,4 @@
 /backend/checkpoint-4000/
 /backend/dataset/
 /backend/faiss_index/
+/backend/__pycache__/
