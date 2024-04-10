@@ -72,8 +72,11 @@ function highlightMatchingSentence(paragraph, sentence) {
   
 
 
-function SearchResults({ results }) {
-
+  function SearchResults({ results, isLoading }) {
+	if (isLoading) {
+	  return <div className="search-results">Loading results...</div>; // Show loading text
+	}
+  	
   return (
 	<div className="search-results">
       {results.map((result, index) => (
@@ -84,9 +87,10 @@ function SearchResults({ results }) {
           
 		  <p>
 			{result.sentence}
-			<FontAwesomeIcon icon={faBars} /> {/* Using Font Awesome's external link icon */}
-
-		  </p>
+			<a href={result.url} target="_blank" rel="noopener noreferrer">
+   				 <FontAwesomeIcon icon={faBars} /> {/* Using Font Awesome's bars icon */}
+			</a>		  
+		</p>
 
 		  <span class='tooltiptext'>
 			{highlightMatchingSentence(result.paragraph, result.sentence)}

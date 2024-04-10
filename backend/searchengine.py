@@ -48,18 +48,18 @@ section = pd.read_csv("./dataset/section.csv")
 
 model_name = "bert" # or "bert"
 if model_name == 'bert':
-  # Load the model and tokenizer
-  model_name = "bert-base-uncased"
-  tokenizer = AutoTokenizer.from_pretrained(model_name)
-  device = "cuda" if torch.cuda.is_available() else "cpu"
-  model = AutoModel.from_pretrained(model_name).to(device)
+	# Load the model and tokenizer
+	model_name = "bert-base-uncased"
+	tokenizer = AutoTokenizer.from_pretrained(model_name)
+	device = "cuda" if torch.cuda.is_available() else "cpu"
+	model = AutoModel.from_pretrained(model_name).to(device)
 
-  def get_embedding(sentence):
-	  inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
-	  inputs = inputs.to(device)
-	  output = model(**inputs)
-	  embedding = output.last_hidden_state.mean(dim=1).detach().cpu().numpy()
-	  return embedding
+	def get_embedding(sentence):
+		inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
+		inputs = inputs.to(device)
+		output = model(**inputs)
+		embedding = output.last_hidden_state.mean(dim=1).detach().cpu().numpy()
+		return embedding
 
 
 """# sort paragraph on similarity using finetuned bert"""
@@ -113,8 +113,8 @@ def searchBySentence(sentence, num_results=10):
 
 	# merge with title
 	title.rename(columns={'id': 'title_id'}, inplace=True)
-	sent_result_df = pd.merge(sent_result_df, title[['title_id', 'title']], on='title_id')
-	sent_result_df = sent_result_df[['title_id', 'title', 'section_id', 'section', 'paragraph_id', 'sentence_id', 'sentence', 'paragraph', 'similarity']]
+	sent_result_df = pd.merge(sent_result_df, title[['title_id', 'title', 'url']], on='title_id')
+	sent_result_df = sent_result_df[['title_id', 'title', 'section_id', 'section', 'paragraph_id', 'sentence_id', 'sentence', 'paragraph', 'similarity', 'url']]
 
 	sent_result_df['titSec'] = sent_result_df['title'] + ' ' + sent_result_df['section']
 	return sent_result_df
