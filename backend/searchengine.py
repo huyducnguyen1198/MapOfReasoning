@@ -45,18 +45,25 @@ title = pd.read_csv("./dataset/title.csv")
 section = pd.read_csv("./dataset/section.csv")
 
 """### Text Embedding Function"""
+ # Check if MPS is available
+if torch.backends.mps.is_available():
+    print("MPS is available!")
+else:
+    print("MPS is not available.")
 
+# Set the device to MPS
+mps_device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 model_name = "bert" # or "bert"
 if model_name == 'bert':
 	# Load the model and tokenizer
 	model_name = "bert-base-uncased"
 	tokenizer = AutoTokenizer.from_pretrained(model_name)
-	device = "cuda" if torch.cuda.is_available() else "cpu"
-	model = AutoModel.from_pretrained(model_name).to(device)
+	#device = "cuda" if torch.cuda.is_available() else "cpu"
+	model = AutoModel.from_pretrained(model_name).to(mps_device)
 
 	def get_embedding(sentence):
 		inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
-		inputs = inputs.to(device)
+		inputs = inputs.to(mps_device)
 		output = model(**inputs)
 		embedding = output.last_hidden_state.mean(dim=1).detach().cpu().numpy()
 		return embedding
@@ -70,13 +77,13 @@ model_name = "bert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 fmodel = BertForMaskedLM.from_pretrained(model_path)
 fmodel = fmodel.bert
-device = "cuda" if torch.cuda.is_available() else "cpu"
+#device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model = fmodel.to(device)
+model = fmodel.to(mps_device)
 
 def get_embedding_similarity(sentence):
   inputs = tokenizer(sentence, return_tensors="pt", padding=True, truncation=True)
-  inputs = inputs.to(device)
+  inputs = inputs.to(mps_device)
   output = model(**inputs)
   embedding = output.last_hidden_state.mean(dim=1).detach().cpu().numpy()
   return embedding
@@ -94,7 +101,7 @@ def searchBySentence(sentence, num_results=10):
 	result = sent_train_index.search(reference_embedding, num_results)
 	reference_embedding_squeeze = reference_embedding.squeeze()
 	result_texts = [sent.loc[i]['sentence'] for i in result[1][0]]
-	result_embedding = [get_embedding(t).squeeze() for t in result_texts]
+	result_embedding = [get_embedding_similarity(t).squeeze() for t in result_texts]
 	result_similarity = [calculate_similarity(reference_embedding_squeeze, e) for e in result_embedding]
 
 	# sort result_texts using result_similairty
@@ -131,7 +138,7 @@ def searchByParagraph(sentence, num_results=10):
 	result = para_train_index.search(reference_embedding, num_results)
 	reference_embedding_squeeze = reference_embedding.squeeze()
 	result_texts = [para.loc[i]['paragraph'] for i in result[1][0]]
-	result_embedding = [get_embedding(t).squeeze() for t in result_texts]
+	result_embedding = [get_embedding_similarity(t).squeeze() for t in result_texts]
 	result_similarity = [calculate_similarity(reference_embedding_squeeze, e) for e in result_embedding]
 
 	# sort result_texts using result_similairty
@@ -153,12 +160,14 @@ def searchByTitleSec(sentence, num_results=10):
 	result  = titSec_train_index.search(reference_embedding, num_results)
 	reference_embedding_squeeze = reference_embedding.squeeze()
 	result_texts = [titSec.loc[i]['titSec'] for i in result[1][0]]
-	result_embedding = [get_embedding(t).squeeze() for t in result_texts]
+	result_embedding = [get_embedding_similarity(t).squeeze() for t in result_texts]
 	result_similarity = [calculate_similarity(reference_embedding_squeeze, e) for e in result_embedding]
 
 	# sort
+	
 	titSec_result_df = titSec.loc[result[1][0]]
 	titSec_result_df['similarity'] = result_similarity
+	titSec_result_df = pd.merge(titSec_result_df, title[['title_id', 'url']], left_on='id', right_on='title_id')
 	titSec_result_df = titSec_result_df.sort_values('similarity', ascending=False)
 	return titSec_result_df
 

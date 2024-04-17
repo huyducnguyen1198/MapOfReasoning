@@ -2,8 +2,8 @@ import React from 'react';
 import '@fortawesome/fontawesome-free/css/all.css'; // Import Font Awesome CSS
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-
-
+import { useState } from 'react';
+import './SearchResults.css';
 
 function highlightMatchingSentence(paragraph, sentence) {
 	// Split the paragraph into individual sentences
@@ -73,32 +73,87 @@ function highlightMatchingSentence(paragraph, sentence) {
 
 
   function SearchResults({ results, isLoading }) {
-	if (isLoading) {
-	  return <div className="search-results">Loading results...</div>; // Show loading text
-	}
-  	
-  return (
-	<div className="search-results">
-      {results.map((result, index) => (
-        <div key={index} class='tooltip'>
-          <div>
-		  <h3>{result.title}</h3> <p>{result.section}</p>
-		  </div>
-          
-		  <p>
-			{result.sentence}
-			<a href={result.url} target="_blank" rel="noopener noreferrer">
-   				 <FontAwesomeIcon icon={faBars} /> {/* Using Font Awesome's bars icon */}
-			</a>		  
-		</p>
+	const [currentPage, setCurrentPage] = useState(1);
+	const resultsPerPage = 10; // Set the desired number of results per page
 
-		  <span class='tooltiptext'>
-			{highlightMatchingSentence(result.paragraph, result.sentence)}
-		  </span>
-        </div>
-      ))}
-    </div>
-  );
-}
+	// Calculate the indexes for the current slice of results
+	const indexOfLastResult = currentPage * resultsPerPage;
+	const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+	const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
+
+	// Change page
+	const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+	// Calculate total pages
+	const pageNumbers = [];
+	for (let i = 1; i <= Math.ceil(results.length / resultsPerPage); i++) {
+		pageNumbers.push(i);
+	}
+
+	if (isLoading) {
+		return <div className="search-results">Loading results...</div>;
+	}
+
+	return (
+		
+		<div className="search-results">
+			<nav>
+				<ul className='pagination'>
+					{pageNumbers.map(number => (
+					<li key={number} className='page-item'>
+						{/* Prevent default action and page refresh on click */}
+						<a onClick={(e) => { e.preventDefault(); paginate(number); }} href='!#' className='page-link'>
+						{number}
+						</a>
+					</li>
+					))}
+				</ul>
+			</nav>
+			{currentResults.map((result, index) => (
+			<div key={index} className='tooltip'>
+				<div>
+					<h3>{result.title}</h3> 
+					<p>{result.section}</p>
+				</div>
+				<>
+					{console.log(result)}
+					{
+					result.sentence !== '' ? (
+						<>
+						<p>
+							{result.sentence}
+							<a href={result.url} target="_blank" rel="noopener noreferrer">
+							<FontAwesomeIcon icon={faBars} />
+							</a>
+						</p>
+						<span className='tooltiptext'>
+							{highlightMatchingSentence(result.paragraph, result.sentence)}
+						</span>
+						</>
+					) : (
+						<p>
+							<a href={result.url} target="_blank" rel="noopener noreferrer">
+								<FontAwesomeIcon icon={faBars} />
+							</a>
+						</p>
+					)}
+				</>
+			</div>
+			))}
+		<nav>
+			<ul className='pagination'>
+				{pageNumbers.map(number => (
+				<li key={number} className='page-item'>
+					{/* Prevent default action and page refresh on click */}
+					<a onClick={(e) => { e.preventDefault(); paginate(number); }} href='!#' className='page-link'>
+					{number}
+					</a>
+				</li>
+				))}
+			</ul>
+		</nav>
+	</div>
+	  );
+	}
 
 export default SearchResults;

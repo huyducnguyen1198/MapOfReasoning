@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Revision Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Revision Checklist</h2>
+    <ul>
+        <li><input type="checkbox" id="dataDictionary"><label for="dataDictionary">Include a detailed data dictionary.</label></li>
+        <li><input type="checkbox" id="regressionTools"><label for="regressionTools">Use regression variable selection tools like Lasso regression or adjusted R-squared.</label></li>
+        <li><input type="checkbox" id="plotExplanation"><label for="plotExplanation">Provide clear explanations for all plots and visualizations.</label></li>
+        <li><input type="checkbox" id="pcaTraining"><label for="pcaTraining">Perform PCA only on training data.</label></li>
+        <li><input type="checkbox" id="modelDescriptions"><label for="modelDescriptions">Offer detailed descriptions and motivations for all models used, including neural networks.</label></li>
+        <li><input type="checkbox" id="statisticalTests"><label for="statisticalTests">Explain the purpose and results of the Kolmogorov-Smirnov and Anderson-Darling tests.</label></li>
+        <li><input type="checkbox" id="conciseConclusion"><label for="conciseConclusion">Ensure the conclusion is concise, focusing on key takeaways and follow-up questions.</label></li>
+        <li><input type="checkbox" id="dataNarrative"><label for="dataNarrative">Enhance the narrative around data exploration results, minimizing raw function output.</label></li>
+        <li><input type="checkbox" id="categoricalNumeric"><label for="categoricalNumeric">Clarify the distinction between numerical and categorical features.</label></li>
+        <li><input type="checkbox" id="featureObservations"><label for="featureObservations">Detail observations regarding features with similar characteristics.</label></li>
+        <li><input type="checkbox" id="handleNulls"><label for="handleNulls">Review and refine the approach to handling null values and dominated features.</label></li>
+        <li><input type="checkbox" id="featureCombination"><label for="featureCombination">Reconsider the combination of features such as Condition1/Condition2 and Exterior1st/Exterion2nd.</label></li>
+        <li><input type="checkbox" id="shapExplanation"><label for="shapExplanation">Provide a brief explanation of SHAP and other evaluation metrics.</label></li>
+    </ul>
+</body>
+</html>
+
