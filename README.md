@@ -4,4 +4,4 @@ downlaod these file to use
 bert: https://drive.google.com/drive/folders/1-C7cJbvyuJNqeVWDwmDSupFid9vLEBNJ?usp=sharing
 data: https://drive.google.com/drive/folders/1lVPVszmnkAIQ3K-2gN0MoYGCNIeqbgcq?usp=sharing
 
-![GUI example][to git.jpg]
+![GUI example](to git.jpg "Example gui")
